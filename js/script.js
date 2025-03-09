@@ -192,7 +192,17 @@ function texFromMacros() {
     let tex = '';
     for (const macro of macros) {
         if (macro.command != '') {
-            tex += `\\def\\${macro.command}{${macro.value}}`;
+            let argc = 0;
+            for (const match of macro.value.matchAll(/#\d+/g)) {
+                const n = parseInt(match[0].substring(1));
+                argc = Math.max(argc, n);
+            }
+            // TeX definition: `\def#1#2\mycommand{...}`
+            tex += '\\def';
+            tex += `\\${macro.command}`;
+            for (let i = 1; i <= argc; ++i)
+                tex += `#${i}`;
+            tex += `{${macro.value}}\n`;
         }
     }
     return tex;
