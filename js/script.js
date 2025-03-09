@@ -128,7 +128,7 @@ function copyPNG() {
 }
 function downloadPNG() {
     renderPNG(canvas => {
-        const link = create("a", { href: canvas.toDataURL(), target: "_blank", download: "equation.svg" });
+        const link = create("a", { href: canvas.toDataURL(), target: "_blank", download: "equation.png" });
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

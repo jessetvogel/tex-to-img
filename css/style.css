@@ -156,12 +156,15 @@ canvas {
 }
 
 #messages {
+    margin-bottom: -16px;
+
     &>div {
         color: var(--white);
         background-color: var(--green);
         padding: 8px;
         border-radius: 8px;
         animation: fade-in-left 0.5s ease, fade-out-right 0.5s ease 2s forwards;
+        margin-bottom: 16px;
 
         &.error {
             background-color: var(--red);
@@ -173,11 +176,13 @@ canvas {
     0% {
         transform: translateX(-16px);
         opacity: 0.0;
+        margin-bottom: -32px;
     }
 
     100% {
         transform: translateX(0px);
         opacity: 1.0;
+        margin-bottom: 16px;
     }
 }
 
@@ -185,11 +190,13 @@ canvas {
     0% {
         transform: translateX(0px);
         opacity: 1.0;
+        margin-bottom: 16px;
     }
 
     100% {
         transform: translateX(16px);
         opacity: 0.0;
+        margin-bottom: -32px;
     }
 }
 
