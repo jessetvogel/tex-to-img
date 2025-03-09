@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Jesse Vogel">
-    <meta name="description" content="TeX to img">
-    <title>TeX to img</title>
+    <meta name="description" content="TeX to image">
+    <title>TeX to image</title>
     <link rel="icon" type="image/png" href="img/favicon.png">
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
     <link rel="stylesheet" href="css/style.css">
@@ -16,15 +16,13 @@
 <body>
     <div class="column">
 
-        <div class="header">
+        <div class="title">
             TeX to image
         </div>
 
-        <div class="textarea-wrapper">
-            <textarea id="textarea" placeholder="Type your TeX here .." autofocus
-                onInput="this.parentNode.dataset.replicatedValue = this.value">% Type your TeX here ..
+        <textarea id="textarea" placeholder="Type your TeX here .." autofocus
+            onInput="this.parentNode.dataset.replicatedValue = this.value">% Type your TeX here ..
 \int_0^\pi \frac{1}{2} \sin(x) dx = 1</textarea>
-        </div>
 
         <div id="output"></div>
 
@@ -33,9 +31,15 @@
             <div class="button copy" id="button-copy-png" title="Copy as PNG to clipboard">PNG</div>
             <div class="button download" id="button-download-svg" title="Download as SVG">SVG</div>
             <div class="button download" id="button-download-png" title="Download as PNG">PNG</div>
+            <div class="button settings" id="button-macros" title="Configure macros"></div>
+            <div class="button history" id="button-history" title="View previous snippets"></div>
         </div>
 
         <div id="messages"></div>
+
+        <div id="macros"></div>
+
+        <div id="history"></div>
 
     </div>
 
