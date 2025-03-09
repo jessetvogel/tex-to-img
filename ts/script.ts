@@ -296,8 +296,11 @@ function configureTextarea(textarea: HTMLTextAreaElement): void {
             const tab = "    ";
             this.value = this.value.substring(0, start) + tab + this.value.substring(end);
             this.selectionStart = this.selectionEnd = start + tab.length;
+            renderSVG();
         }
-        if (event.key == "b" && event.metaKey) { // CMD + B -> `\textbf{...}`
+        const platform = (navigator as any)?.userAgentData?.platform || navigator?.platform;
+        const metaKey = (/mac/i.test(platform) ? event.metaKey : event.ctrlKey);
+        if (event.key == "b" && metaKey) { // CMD + B -> `\textbf{...}`
             event.preventDefault();
             const start = this.selectionStart;
             const end = this.selectionEnd;
@@ -305,8 +308,9 @@ function configureTextarea(textarea: HTMLTextAreaElement): void {
             this.value = this.value.substring(0, start) + textbf + "{" + this.value.substring(start, end) + "}" + this.value.substring(end);
             this.selectionStart = start + textbf.length + 1;
             this.selectionEnd = end + textbf.length + 1;
+            renderSVG();
         }
-        if (event.key == "i" && event.metaKey) { // CMD + I -> `\textit{...}`
+        if (event.key == "i" && metaKey) { // CMD + I -> `\textit{...}`
             event.preventDefault();
             const start = this.selectionStart;
             const end = this.selectionEnd;
@@ -314,6 +318,7 @@ function configureTextarea(textarea: HTMLTextAreaElement): void {
             this.value = this.value.substring(0, start) + textit + "{" + this.value.substring(start, end) + "}" + this.value.substring(end);
             this.selectionStart = start + textit.length + 1;
             this.selectionEnd = end + textit.length + 1;
+            renderSVG();
         }
     });
 }
