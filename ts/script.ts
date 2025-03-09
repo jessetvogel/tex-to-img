@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Configure textarea
     configureTextarea(textarea);
+    onInput(textarea, function () { storeCurrentTex((this as HTMLTextAreaElement).value); });
 
     // Disable non-supported features
     if ('supports' in ClipboardItem && (ClipboardItem.supports as any)("image/svg+xml") === false) {
@@ -320,11 +321,17 @@ function configureTextarea(textarea: HTMLTextAreaElement): void {
 function storeLocalData(): void {
     localStorage.setItem("tex-to-img-macros", JSON.stringify(macros.filter(macro => macro.command != '')));
     localStorage.setItem("tex-to-img-history", JSON.stringify(history));
+    storeCurrentTex(($("textarea")! as HTMLTextAreaElement).value);
+}
+
+function storeCurrentTex(tex: string): void {
+    localStorage.setItem("tex-to-img-current-tex", tex);
 }
 
 function loadLocalData(): void {
     const localMacros = localStorage.getItem("tex-to-img-macros");
     const localHistory = localStorage.getItem("tex-to-img-history");
+    const localCurrentTex = localStorage.getItem("tex-to-img-current-tex");
 
     if (localMacros != null) {
         macros.length = 0;
@@ -334,5 +341,9 @@ function loadLocalData(): void {
     if (localHistory != null) {
         history.length = 0;
         history.push(...JSON.parse(localHistory));
+    }
+
+    if (localCurrentTex != null) {
+        ($("textarea")! as HTMLTextAreaElement).value = localCurrentTex;
     }
 }

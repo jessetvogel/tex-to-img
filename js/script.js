@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
     onClick($("button-download-png"), downloadPNG);
     // Configure textarea
     configureTextarea(textarea);
+    onInput(textarea, function () { storeCurrentTex(this.value); });
     // Disable non-supported features
     if ('supports' in ClipboardItem && ClipboardItem.supports("image/svg+xml") === false) {
         const buttonCopySVG = $("button-copy-svg");
@@ -128,7 +129,7 @@ function copyPNG() {
 }
 function downloadPNG() {
     renderPNG(canvas => {
-        const link = create("a", { href: canvas.toDataURL(), target: "_blank", download: "equation.png" });
+        const link = create("a", { href: canvas.toDataURL(), target: "_blank", download: "equation.svg" });
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -284,10 +285,15 @@ function configureTextarea(textarea) {
 function storeLocalData() {
     localStorage.setItem("tex-to-img-macros", JSON.stringify(macros.filter(macro => macro.command != '')));
     localStorage.setItem("tex-to-img-history", JSON.stringify(history));
+    storeCurrentTex($("textarea").value);
+}
+function storeCurrentTex(tex) {
+    localStorage.setItem("tex-to-img-current-tex", tex);
 }
 function loadLocalData() {
     const localMacros = localStorage.getItem("tex-to-img-macros");
     const localHistory = localStorage.getItem("tex-to-img-history");
+    const localCurrentTex = localStorage.getItem("tex-to-img-current-tex");
     if (localMacros != null) {
         macros.length = 0;
         macros.push(...JSON.parse(localMacros));
@@ -295,5 +301,8 @@ function loadLocalData() {
     if (localHistory != null) {
         history.length = 0;
         history.push(...JSON.parse(localHistory));
+    }
+    if (localCurrentTex != null) {
+        $("textarea").value = localCurrentTex;
     }
 }
