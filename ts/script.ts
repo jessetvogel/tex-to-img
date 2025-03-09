@@ -11,11 +11,7 @@ const macros: { command: string, value: string }[] = [
 ];
 
 // Default TeX snippets
-const history: { tex: string }[] = [
-    { tex: "a^2 + b^2 = c^2" },
-    { tex: "\\NN \\subseteq \\QQ \\subseteq \\RR \\subseteq \\CC" },
-    { tex: "\\begin{pmatrix} 1 & 2 & 3 \\\\ 4 & 5 & 6 \\\\ 7 & 8 & 9 \\end{pmatrix}" },
-];
+const history: { tex: string }[] = [];
 
 document.addEventListener('DOMContentLoaded', function () {
     const textarea = $("textarea")! as HTMLTextAreaElement;
@@ -74,7 +70,7 @@ function renderSVG() {
 
     const tex = texFromMacros() + textarea.value;
     const options = {};
-    
+
     MathJax.tex2svgPromise(tex, options).then(function (node: HTMLElement) {
         clear(output);
         output.append(node);
@@ -261,6 +257,11 @@ function updateHistoryOverview(): void {
             }
         }));
     }
+    if (history.length == 0) {
+        div.append(create("div", {
+            style: "text-align: center; grid-column: 1 / span 2;"
+        }, "no TeX snippets saved yet.."));
+    }
 }
 
 function addHistoryEntry(): void {
@@ -285,14 +286,33 @@ function configureTextarea(textarea: HTMLTextAreaElement): void {
     setTimeout(update, 1);
     setTimeout(update, 10);
     setTimeout(update, 100);
+
     textarea.addEventListener('keydown', function (event) {
-        if (event.key == 'Tab') {
+        if (event.key == 'Tab') { // tab -> 4 spaces
             event.preventDefault();
             const start = this.selectionStart;
             const end = this.selectionEnd;
             const tab = "    ";
             this.value = this.value.substring(0, start) + tab + this.value.substring(end);
             this.selectionStart = this.selectionEnd = start + tab.length;
+        }
+        if (event.key == "b" && event.metaKey) { // CMD + B -> `\textbf{...}`
+            event.preventDefault();
+            const start = this.selectionStart;
+            const end = this.selectionEnd;
+            const textbf = "\\textbf";
+            this.value = this.value.substring(0, start) + textbf + "{" + this.value.substring(start, end) + "}" + this.value.substring(end);
+            this.selectionStart = start + textbf.length + 1;
+            this.selectionEnd = end + textbf.length + 1;
+        }
+        if (event.key == "i" && event.metaKey) { // CMD + I -> `\textit{...}`
+            event.preventDefault();
+            const start = this.selectionStart;
+            const end = this.selectionEnd;
+            const textit = "\\textit";
+            this.value = this.value.substring(0, start) + textit + "{" + this.value.substring(start, end) + "}" + this.value.substring(end);
+            this.selectionStart = start + textit.length + 1;
+            this.selectionEnd = end + textit.length + 1;
         }
     });
 }
