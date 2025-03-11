@@ -253,7 +253,7 @@ canvas {
         padding: 4px;
         border-radius: 8px;
         outline: none;
-        width: 224px;
+        width: 100%;
         font-size: 14px;
         font-family: "JetBrainsMono", monospace;
         color: var(--dark);
@@ -269,7 +269,7 @@ canvas {
     textarea {
         font-size: 14px;
         line-height: 16px;
-        width: 224px;
+        width: 100%;
     }
 
     #button-add-macro {
