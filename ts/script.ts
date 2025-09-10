@@ -73,6 +73,13 @@ function renderSVG() {
     const options = {};
 
     MathJax.tex2svgPromise(tex, options).then(function (node: HTMLElement) {
+        // Change `currentColor` to `black`
+        for (const g of node.querySelectorAll("*[fill=currentColor]")) {
+            g.setAttribute("stroke", "black");
+            g.setAttribute("fill", "black");
+        }
+
+        // Show SVG
         clear(output);
         output.append(node);
     }).catch(function (err: any) {
